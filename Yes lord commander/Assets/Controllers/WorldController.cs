@@ -58,10 +58,11 @@ public class WorldController : MonoBehaviour
                 tile_go.AddComponent<SpriteRenderer>().sprite = emptySprite;
 
                 //Register the callback so the gameobject is updated when the tile type's change
-                tile_data.RegisterTileTypeChangedCallback(OnTileTypeChanged);
+                
             }
         }
-        
+        World.RegisterTileChanged(OnTileChanged);
+
         Camera.main.transform.position = new Vector3 (World.Width/2, World.Height/2 , Camera.main.transform.position.z);
         //World.RandomizeTiles();
         _instance = this;
@@ -93,12 +94,12 @@ public class WorldController : MonoBehaviour
             GameObject tile_go = tileGameObjectMap[tile_data];
 
             tileGameObjectMap.Remove(tile_data);
-            tile_data.UnRegisterTileTypeChangedCallback(OnTileTypeChanged);
+            tile_data.UnRegisterTileTypeChangedCallback(OnTileChanged);
             Destroy(tile_go);
         }
     }
 
-    void OnTileTypeChanged(Tile tile_data)
+    void OnTileChanged(Tile tile_data)
     {
         if(tileGameObjectMap.ContainsKey(tile_data) == false)
         {

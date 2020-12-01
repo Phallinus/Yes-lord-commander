@@ -9,7 +9,7 @@ public class Tile
 {
     TileType type = TileType.Empty;
 
-    Action<Tile> cbTileTypeChanged;
+    Action<Tile> cbTileChanged;
 
     public TileType Type
     {
@@ -22,9 +22,9 @@ public class Tile
             TileType oldType = type;
             type = value;
 
-            if (cbTileTypeChanged != null && oldType != type)
+            if (cbTileChanged != null && oldType != type)
             {
-                cbTileTypeChanged(this);
+                cbTileChanged(this);
             }
         }
     }
@@ -45,12 +45,12 @@ public class Tile
 
     public void RegisterTileTypeChangedCallback (Action<Tile> callback)
     {
-        cbTileTypeChanged += callback;
+        cbTileChanged += callback;
     }
 
     public void UnRegisterTileTypeChangedCallback(Action<Tile> callback)
     {
-        cbTileTypeChanged -= callback;
+        cbTileChanged -= callback;
     }
 
     public bool PlaceFurniture(Furnitures furnInstance)

@@ -11,7 +11,7 @@ public class SoundController : MonoBehaviour
     {
         WorldController.Instance.World.RegisterFurnitureCreated(OnFurnitureCreated);
 
-        WorldController.Instance.World.RegisterTileChanged(OnTileTypeChanged);
+        WorldController.Instance.World.RegisterTileChanged(OnTileChanged);
     }
 
 
@@ -20,7 +20,7 @@ public class SoundController : MonoBehaviour
         soundCooldown -= Time.deltaTime;
     }
 
-    void OnTileTypeChanged(Tile tile_data)
+    void OnTileChanged(Tile tile_data)
     {
         if (soundCooldown> 0)
         {
@@ -37,7 +37,12 @@ public class SoundController : MonoBehaviour
         {
             return;
         }
-        AudioClip ac = Resources.Load<AudioClip>("Sounds/WoodWall_Oncreated");
+
+        AudioClip ac = Resources.Load<AudioClip>("Sounds/" + furn.FurnitureType +"_OnCreated");
+        if (ac ==null)
+        {
+            ac = Resources.Load<AudioClip>("Sounds/WoodWall_OnCreated");
+        }
         AudioSource.PlayClipAtPoint(ac, Camera.main.transform.position);
         soundCooldown = 0.1f;
     }
