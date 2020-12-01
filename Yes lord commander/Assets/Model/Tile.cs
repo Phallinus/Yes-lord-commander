@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 
+public enum TileType { Empty, Dirt, Wood, Stone, Snow };
+
 public class Tile 
 {
-    public enum TileType { Empty, Dirt, Wood, Stone, Snow};
-
     TileType type = TileType.Empty;
 
     Action<Tile> cbTileTypeChanged;
@@ -29,35 +29,18 @@ public class Tile
         }
     }
 
-    LooseObject looseObject;
-    InstalledObject installedObject;
+    Inventory inventory;
+    public Furnitures furniture { get; protected set; }
 
-    World world;
-    int x;
-
-    public int X
-    {
-        get
-        {
-            return x;
-        }
-    }
-
-    int y;
-
-    public int Y
-    {
-        get
-        {
-            return y;
-        }
-    }
+    public World world { get; protected set; }
+    public int X { get; protected set; }
+    public int Y { get; protected set; }
 
     public Tile( World world, int x, int y )
     {
         this.world = world;
-        this.x = x;
-        this.y = y;
+        this.X = x;
+        this.Y = y;
     }
 
     public void RegisterTileTypeChangedCallback (Action<Tile> callback)
@@ -68,6 +51,22 @@ public class Tile
     public void UnRegisterTileTypeChangedCallback(Action<Tile> callback)
     {
         cbTileTypeChanged -= callback;
+    }
+
+    public bool PlaceFurniture(Furnitures furnInstance)
+    {
+        if (furnInstance == null)
+        {
+            furniture = null;
+            return true;
+        }
+        if(furniture != null)
+        {
+            Debug.LogError("Try to assign a Furniture to a tile that already has one");
+            return false;
+        }
+        furniture = furnInstance;
+        return true; 
     }
 
 }
